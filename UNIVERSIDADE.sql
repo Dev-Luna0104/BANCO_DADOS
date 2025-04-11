@@ -23,11 +23,13 @@ CREATE TABLE alunos (
     );
     
     CREATE TABLE turma(
-		cod_disc VARCHAR(10) NOT NULL PRIMARY KEY ,
+		cod_disc VARCHAR(10) ,
         cod_turma INT NOT NULL PRIMARY KEY,
-        cod_prof INT NOT NULL PRIMARY KEY ,
-        ano YEAR ,
-        horario TIME
-		FOREIGN KEY (codigo_produto) REFERENCES produto(codigo_produto), 
-		FOREIGN KEY (numero_nota) REFERENCES venda(numero_nota)
+        cod_prof INT,
+        ano YEAR NOT NULL PRIMARY KEY,
+        horario TIME,
+		FOREIGN KEY (cod_disc) REFERENCES disciplinas(cod_disc), 
+		FOREIGN KEY (cod_prof) REFERENCES professores(cod_prof)
     );
+    
+    
