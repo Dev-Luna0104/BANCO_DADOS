@@ -1,0 +1,81 @@
+drop database if exists restaurante; 
+CREATE DATABASE restaurante;
+USE restaurante;
+
+
+
+create table cliente (
+	cpf varchar(11) not null primary key ,
+    nome varchar(50),
+    ativo tinyint(1),
+    atendente tinyint(1)
+);
+
+create table categoria(
+	codigo int(11) auto_increment primary key,
+    descricao varchar(50)
+);
+
+create table item (
+	codigo int(11) auto_increment primary key,
+    descricao varchar(50),
+    valor float,
+    ativo tinyint(1),
+    qtdEstoque float,
+    codCategoria int(11),
+    foreign key (codCAtegoria) references categoria(codigo)
+);
+
+
+create table comanda(
+	codigo int auto_increment primary key,
+    mesa int(11),
+    estado varchar(20),
+    dtHrAbertura datetime,
+    dtHrEncerramento datetime,
+    cpfCliente varchar(11),
+    cpfAtendente varchar(11),
+    foreign key (cpfCliente) references cliente(cpf),
+    foreign key (cpfAtendente) references cliente(cpf)
+);
+
+create table comanda_item(
+	codComanda int(11),
+    codItem int(11),
+    qtdItem float,
+    obs varchar(100),
+    foreign key (codComanda) references comanda(codigo),
+    foreign key (codItem) references item(codigo)
+    
+);
+
+INSERT INTO cliente (cpf, nome) VALUES
+('12345678901', 'Rodolfo, o Renegado'),
+('23456789012', 'Maria, a Estrela Guia'),
+('34567890123', 'Jingle Bells'),
+('45678901234', 'Clara, a Mãe Natalina'); 
+
+INSERT INTO cliente (cpf, nome, atendente) VALUES
+('56789012345', 'Filó, o Mordomo', 1),
+('67890123456', 'Lúcia, a Mamãe Noel', 1); 
+
+INSERT INTO categoria (descricao) VALUES
+('Ceia dos Elfos'),
+('Delícias do Trenó'),
+('Sabores do Pólo Norte'); 
+
+INSERT INTO item (descricao, valor, qtdEstoque, codCategoria) VALUES
+('Pernil do Papai Noel', 49.90, 100, 1),
+('Rabanada Encantada', 19.90, 150, 2),
+('Sopa de Neve Mágica', 29.90, 80, 1),
+('Torta do Treno', 24.90, 120, 2),
+('Capuccino do Pólo Norte', 9.90, 200.4, 3); 
+
+INSERT INTO comanda (mesa, cpfCliente, cpfAtendente) VALUES
+(1, '12345678901', '56789012345'),
+(2, '23456789012', '67890123456'); 
+
+INSERT INTO comanda_item (codComanda, codItem, qtdItem) VALUES (2, 3, 1);
+INSERT INTO comanda_item (codComanda, codItem, qtdItem, obs) VALUES
+(1, 2, 4, 'Rabanadas com bengalas doces'),
+(2, 4, 2, 'Torta de chocolate e frutas vermelhas'); 
