@@ -35,6 +35,10 @@ CREATE TABLE pedidos(
 create table itens_pedido(
 	num_pedido int not null,
     cod_material int not null,
-    quant_pedida 
-    
+    quant_pedida int not null,
+    valor_unitario decimal(5,2),
+    foreign key (num_pedido) references pedidos(num_pedido),
+    foreign key (cod_material) references materiais(cod_material),
+    primary key (num_pedido, cod_material)
 );
+
