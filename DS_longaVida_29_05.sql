@@ -53,3 +53,127 @@ INSERT INTO Associado (plano, nome, endereco, cidade, estado, cep) VALUES
 ('E3', 'THAIS MENDES', 'RUA DO BOSQUE, 150', 'COTIA', 'SP', '06705-000'),
 ('B3', 'RICARDO SOUSA', 'RUA DAS LARANJEIRAS, 11', 'SANTO ANDRE', 'SP', '09011-111'),
 ('M1', 'SUELI AMARAL', 'RUA DAS PALMEIRAS, 42', 'SÃO PAULO', 'SP', '01250-222');
+
+-- /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+-- /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+
+use longavida;
+
+SELECT a.nome, a.plano, p.descri, p.valor
+FROM associado a
+JOIN plano p ON a.plano = p.sigla;
+
+SELECT COUNT(*) AS total_b1
+FROM associado
+WHERE plano = 'B1';
+
+SELECT a.nome, a.plano, p.valor
+FROM associado a
+JOIN plano p ON a.plano = p.sigla;
+
+SELECT * 
+FROM associado
+WHERE cidade IN ('COTIA', 'DIADEMA');
+
+drop database longavida;
+SELECT a.nome, a.plano, p.valor
+FROM associado a
+JOIN plano p ON a.plano = p.sigla
+WHERE a.cidade = 'BARUERI' AND a.plano = 'M1';
+
+SELECT a.nome, a.plano, p.valor
+FROM associado a
+JOIN plano p ON a.plano = p.sigla
+WHERE a.cidade = 'SÃO PAULO';
+
+SELECT *
+FROM associado a
+JOIN plano p ON a.plano = p.sigla
+WHERE a.nome LIKE '%SILVA%';
+
+
+UPDATE plano SET valor = valor * 1.10 WHERE sigla LIKE 'B%';
+UPDATE plano SET valor = valor * 1.05 WHERE sigla LIKE 'E%';
+UPDATE plano SET valor = valor * 1.03 WHERE sigla LIKE 'M%';
+
+UPDATE associado
+SET plano = 'E3'
+WHERE nome = 'PEDRO JOSE DE OLIVEIRA';
+
+
+SELECT COUNT(*) AS total_e3
+FROM associado
+WHERE plano = 'E3';
+
+
+SELECT a.nome, p.valor
+FROM associado a
+JOIN plano p ON a.plano = p.sigla
+WHERE a.plano IN ('B1', 'E1', 'M1');
+
+SELECT MAX(valor) AS maior_valor, MIN(valor) AS menor_valor
+FROM plano;
+
+SELECT *
+FROM associado a
+JOIN plano p ON a.plano = p.sigla
+WHERE p.descri LIKE 'Executivo%';
+
+SELECT *
+FROM associado a
+JOIN plano p ON a.plano = p.sigla
+WHERE p.descri LIKE 'Básico%' OR p.descri LIKE 'Master%';
+
+DELETE FROM associado
+WHERE cidade = 'SANTO ANDRE';
+
+SELECT a.nome, a.plano, p.valor
+FROM associado a
+JOIN plano p ON a.plano = p.sigla
+WHERE a.cidade = 'SÃO PAULO' AND a.plano IN ('M2', 'M3')
+ORDER BY a.nome ASC;
+
+SELECT *
+FROM associado a
+JOIN plano p ON a.plano = p.sigla
+ORDER BY p.descri;
+
+SELECT a.*, p.*
+FROM associado a
+JOIN plano p ON a.plano = p.sigla
+ORDER BY p.descri ASC, a.nome DESC;
+
+SELECT a.*
+FROM associado a
+JOIN plano p ON a.plano = p.sigla
+WHERE p.descri NOT LIKE 'Master%';
+
+SELECT a.nome, p.descri
+FROM associado a
+JOIN plano p ON a.plano = p.sigla
+ORDER BY a.nome ASC;
+
+SELECT *
+FROM plano
+WHERE valor BETWEEN 300 AND 500;
+
+SELECT a.nome, a.plano, p.descri, p.valor
+FROM associado a
+JOIN plano p ON a.plano = p.sigla
+WHERE a.nome LIKE '%AMARAL%';
+
+SELECT *
+FROM associado
+WHERE cidade = 'DIADEMA';
+
+UPDATE plano
+SET valor = valor * 1.06
+WHERE sigla LIKE 'M%';
+
+SELECT *
+FROM associado
+WHERE cep LIKE '09%';
+
+drop database longavida;
+
+
