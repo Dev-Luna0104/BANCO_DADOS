@@ -1,38 +1,35 @@
-
-drop database if exists longavida ;
+DROP DATABASE IF EXISTS longavida;
 CREATE DATABASE longavida;
-use longavida;
+USE longavida;
 
-create table plano(
-	sigla varchar(2) not null primary key ,
-	descri varchar(30),
-    valor decimal(10,2) not null
+CREATE TABLE plano (
+    sigla VARCHAR(2) NOT NULL PRIMARY KEY,
+    descri VARCHAR(30),
+    valor DECIMAL(10,2) NOT NULL
 );
 
-insert into plano (sigla, descri, valor) values
-("B1","Básico 1", 200.00),
-("B2","Básico 2",150.00),
-("B3","Básico 3",100.00),
-("E1","Executivo 1",350.00),
-("E2","Executivo 2",300.00),
-("E3","Executivo 3",250.00),
-("M1","Master 1",500.00),
-("M2","Master 2",450.00),
-("M3","Master 3",400.00);
+INSERT INTO plano (sigla, descri, valor) VALUES
+('B1', 'Básico 1', 200.00),
+('B2', 'Básico 2', 150.00),
+('B3', 'Básico 3', 100.00),
+('E1', 'Executivo 1', 350.00),
+('E2', 'Executivo 2', 300.00),
+('E3', 'Executivo 3', 250.00),
+('M1', 'Master 1', 500.00),
+('M2', 'Master 2', 450.00),
+('M3', 'Master 3', 400.00);
 
--- /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-
-create table associado(
-	codigo integer auto_increment not null primary key,
-    plano varchar(2) not null,
-    nome varchar(40) not null,
-    endereco varchar(35),
-    cidade varchar(20),
-    estado varchar(2),
-    cep varchar(9)
+CREATE TABLE associado (
+    codigo INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    plano VARCHAR(2) NOT NULL,
+    nome VARCHAR(40) NOT NULL,
+    endereco VARCHAR(35),
+    cidade VARCHAR(20),
+    estado VARCHAR(2),
+    cep VARCHAR(9)
 );
 
-INSERT INTO Associado (plano, nome, endereco, cidade, estado, cep) VALUES
+INSERT INTO associado (plano, nome, endereco, cidade, estado, cep) VALUES
 ('B1', 'PEDRO JOSE DE OLIVEIRA', 'RUA DAS FLORES, 25', 'SÃO PAULO', 'SP', '01234-010'),
 ('B1', 'MARIA DO CARMO', 'AV. BRASIL, 145', 'DIADEMA', 'SP', '09950-120'),
 ('B2', 'JOÃO SILVA', 'RUA VERDE, 45', 'SÃO PAULO', 'SP', '01345-060'),
@@ -54,126 +51,69 @@ INSERT INTO Associado (plano, nome, endereco, cidade, estado, cep) VALUES
 ('B3', 'RICARDO SOUSA', 'RUA DAS LARANJEIRAS, 11', 'SANTO ANDRE', 'SP', '09011-111'),
 ('M1', 'SUELI AMARAL', 'RUA DAS PALMEIRAS, 42', 'SÃO PAULO', 'SP', '01250-222');
 
--- /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
--- /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-
-use longavida;
-
-SELECT a.nome, a.plano, p.descri, p.valor
-FROM associado a
+SELECT a.nome, a.plano, p.descri, p.valor FROM associado a 
 JOIN plano p ON a.plano = p.sigla;
 
-SELECT COUNT(*) AS total_b1
-FROM associado
+SELECT COUNT(*) AS total_b1 FROM associado 
 WHERE plano = 'B1';
 
-SELECT a.nome, a.plano, p.valor
-FROM associado a
+SELECT a.nome, a.plano, p.valor FROM associado a 
 JOIN plano p ON a.plano = p.sigla;
 
-SELECT * 
-FROM associado
-WHERE cidade IN ('COTIA', 'DIADEMA');
+SELECT * FROM associado WHERE cidade IN ('COTIA', 'DIADEMA');
 
-drop database longavida;
-SELECT a.nome, a.plano, p.valor
-FROM associado a
-JOIN plano p ON a.plano = p.sigla
-WHERE a.cidade = 'BARUERI' AND a.plano = 'M1';
+SELECT a.nome, a.plano, p.valor FROM associado a 
+JOIN plano p ON a.plano = p.sigla WHERE a.cidade = 'BARUERI' AND a.plano = 'M1';
 
-SELECT a.nome, a.plano, p.valor
-FROM associado a
-JOIN plano p ON a.plano = p.sigla
-WHERE a.cidade = 'SÃO PAULO';
+SELECT a.nome, a.plano, p.valor FROM associado a
+JOIN plano p ON a.plano = p.sigla WHERE a.cidade = 'SÃO PAULO';
 
-SELECT *
-FROM associado a
-JOIN plano p ON a.plano = p.sigla
+SELECT * FROM associado a JOIN plano p ON a.plano = p.sigla 
 WHERE a.nome LIKE '%SILVA%';
-
 
 UPDATE plano SET valor = valor * 1.10 WHERE sigla LIKE 'B%';
 UPDATE plano SET valor = valor * 1.05 WHERE sigla LIKE 'E%';
 UPDATE plano SET valor = valor * 1.03 WHERE sigla LIKE 'M%';
 
-UPDATE associado
-SET plano = 'E3'
-WHERE nome = 'PEDRO JOSE DE OLIVEIRA';
+UPDATE associado SET plano = 'E3' WHERE nome = 'PEDRO JOSE DE OLIVEIRA';
 
+SELECT COUNT(*) AS total_e3 FROM associado WHERE plano = 'E3';
 
-SELECT COUNT(*) AS total_e3
-FROM associado
-WHERE plano = 'E3';
+SELECT a.nome, p.valor FROM associado a 
+JOIN plano p ON a.plano = p.sigla WHERE a.plano IN ('B1', 'E1', 'M1');
 
+SELECT MAX(valor) AS maior_valor, MIN(valor) AS menor_valor FROM plano;
 
-SELECT a.nome, p.valor
-FROM associado a
-JOIN plano p ON a.plano = p.sigla
-WHERE a.plano IN ('B1', 'E1', 'M1');
-
-SELECT MAX(valor) AS maior_valor, MIN(valor) AS menor_valor
-FROM plano;
-
-SELECT *
-FROM associado a
-JOIN plano p ON a.plano = p.sigla
+SELECT * FROM associado a JOIN plano p ON a.plano = p.sigla 
 WHERE p.descri LIKE 'Executivo%';
 
-SELECT *
-FROM associado a
-JOIN plano p ON a.plano = p.sigla
+SELECT * FROM associado a JOIN plano p ON a.plano = p.sigla 
 WHERE p.descri LIKE 'Básico%' OR p.descri LIKE 'Master%';
 
-DELETE FROM associado
-WHERE cidade = 'SANTO ANDRE';
+DELETE FROM associado WHERE cidade = 'SANTO ANDRE';
 
-SELECT a.nome, a.plano, p.valor
-FROM associado a
-JOIN plano p ON a.plano = p.sigla
-WHERE a.cidade = 'SÃO PAULO' AND a.plano IN ('M2', 'M3')
-ORDER BY a.nome ASC;
+SELECT a.nome, a.plano, p.valor FROM associado a 
+JOIN plano p ON a.plano = p.sigla WHERE a.cidade = 'SÃO PAULO' 
+AND a.plano IN ('M2', 'M3') ORDER BY a.nome;
 
-SELECT *
-FROM associado a
-JOIN plano p ON a.plano = p.sigla
-ORDER BY p.descri;
+SELECT * FROM associado a 
+JOIN plano p ON a.plano = p.sigla ORDER BY p.descri;
 
-SELECT a.*, p.*
-FROM associado a
-JOIN plano p ON a.plano = p.sigla
-ORDER BY p.descri ASC, a.nome DESC;
+SELECT a.nome, a.plano, p.descri FROM associado a 
+JOIN plano p ON a.plano = p.sigla ORDER BY p.descri ASC, a.nome DESC;
 
-SELECT a.*
-FROM associado a
-JOIN plano p ON a.plano = p.sigla
+SELECT * FROM associado a JOIN plano p ON a.plano = p.sigla 
 WHERE p.descri NOT LIKE 'Master%';
 
-SELECT a.nome, p.descri
-FROM associado a
-JOIN plano p ON a.plano = p.sigla
-ORDER BY a.nome ASC;
+SELECT a.nome, p.descri FROM associado a 
+JOIN plano p ON a.plano = p.sigla ORDER BY a.nome;
 
-SELECT *
-FROM plano
-WHERE valor BETWEEN 300 AND 500;
+SELECT * FROM plano WHERE valor BETWEEN 300 AND 500;
 
-SELECT a.nome, a.plano, p.descri, p.valor
-FROM associado a
-JOIN plano p ON a.plano = p.sigla
-WHERE a.nome LIKE '%AMARAL%';
+SELECT a.nome, a.plano, p.descri, p.valor FROM associado a 
+JOIN plano p ON a.plano = p.sigla WHERE a.nome LIKE '%AMARAL%';
 
-SELECT *
-FROM associado
-WHERE cidade = 'DIADEMA';
+SELECT * FROM associado WHERE cidade = 'DIADEMA';
+UPDATE plano SET valor = valor * 1.06 WHERE sigla LIKE 'M%';
 
-UPDATE plano
-SET valor = valor * 1.06
-WHERE sigla LIKE 'M%';
-
-SELECT *
-FROM associado
-WHERE cep LIKE '09%';
-
-drop database longavida;
-
-
+SELECT * FROM associado WHERE cep LIKE '09%';
